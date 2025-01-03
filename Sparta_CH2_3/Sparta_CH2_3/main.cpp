@@ -16,17 +16,22 @@ private:
 		delete[] startPoint;
 		startPoint = newData;
 		currentCapacity = newCapacity;
+
+		std::cout << "배열 크기 " << newCapacity << "로확장" << std::endl;
 	}
 
 public:
+	// 기본 인자를 사용해서 하나의 생성자를 사용
 	SimpleVector(int size = 10) : startPoint(new T[size]), currentSize(0), currentCapacity(size) {}
 
+	// 복사 생성자
 	SimpleVector(const SimpleVector& other) : startPoint(nullptr), currentSize(other.currentSize), currentCapacity(other.currentCapacity)
 	{
 		this->startPoint = new T[other.currentCapacity];
 		std::copy(other.startPoint, other.startPoint + other.currentSize, this->startPoint);
 	}
 
+	// 소멸자
 	~SimpleVector()
 	{
 		// 동적 배열 메모리 해제
@@ -70,9 +75,15 @@ public:
 
 	int capacity() const { return currentCapacity; }
 
+	// 정렬 및 출력
 	void sortData()
 	{
 		std::sort(startPoint, startPoint + currentSize);
+
+		for (int i = 0; i < currentSize; ++i)
+		{
+			std::cout << "정렬 " << i << "번째: " << *(startPoint + i) << std::endl;
+		}
 	}
 };
 
@@ -80,15 +91,18 @@ int main()
 {
 	SimpleVector<int>test;
 
-	for (int i = 0; i < 15; ++i)
+	for (int i = 0; i < 7; ++i)
 	{
 		test.push_back(i);
+		test.push_back(i * 2.5);
 	}
 
 	SimpleVector<int>test2(test);
 
 	test2.pop_back();
 
-	std::cout << test2.size() << std::endl;
-	std::cout << test2.capacity() << std::endl;
+	std::cout << "배열 사이즈: " << test2.size() << std::endl;
+	std::cout << "배열 용량: " << test2.capacity() << std::endl;
+
+	test2.sortData();
 }
